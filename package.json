@@ -1,0 +1,22 @@
+{
+  "name": "windowed-fullscreen-presenter",
+  "version": "1.0.0",
+  "description": "Display a presentation from MS Office 365 as a browser window",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [
+    "powerpoint",
+    "zoom",
+    "screenshare"
+  ],
+  "author": "GitHub",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^9.1.0"
+  },
+  "dependencies": {
+    "socket.io-client": "^2.3.0"
+  }
+}
