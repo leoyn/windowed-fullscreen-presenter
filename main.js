@@ -1,8 +1,10 @@
 const {app, BrowserWindow} = require('electron')
 const path = require('path')
+const server = require("./server.js");
+let mainWindow;
 
 function createWindow () {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     frame: false,
     width: 1280,
     height: 720,
@@ -33,3 +35,28 @@ app.whenReady().then(() => {
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit()
 })
+
+server.onKey = (action) => {
+  let keyCode;
+
+  switch(action) {
+    case "next":
+      keyCode = "Right"; 
+      break;
+
+    case "previous":
+      keyCode = "Left"; 
+      break;
+    
+    case "reload":
+      mainWindow.reload();
+      break;
+  }
+
+  if(keyCode) {
+    mainWindow.webContents.sendInputEvent({type:"keyDown",keyCode:keyCode});
+    mainWindow.webContents.sendInputEvent({type:"keyUp",keyCode:keyCode});
+  }
+}
+
+server.server.listen(3000)
