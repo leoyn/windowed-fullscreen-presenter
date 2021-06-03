@@ -1,4 +1,8 @@
-const socket = io("/");
+const query = new URLSearchParams(window.location.search);
+
+const socket = io.connect("/", {
+    query: "token=" + query.get("token")
+})
 
 document.querySelector("#previous").addEventListener("click", (evt) => {
     socket.emit("navigation", {
@@ -20,4 +24,9 @@ document.querySelector("#reload").addEventListener("click", (evt) => {
 
 socket.on("meta", (data) => {
     document.querySelector("#userCount").textContent = data.connectedUsers;
+});
+
+socket.on("error", error => {
+    alert(error.message);
+    window.location.reload();
 });

@@ -17,6 +17,7 @@
     "electron": "^9.1.0"
   },
   "dependencies": {
+    "colors": "^1.4.0",
     "express": "^4.17.1",
     "socket.io": "^4.1.2",
     "socket.io-client": "^2.3.0"
