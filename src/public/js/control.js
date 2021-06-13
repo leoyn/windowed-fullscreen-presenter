@@ -6,19 +6,29 @@ const socket = io.connect("/", {
 
 document.querySelector("#previous").addEventListener("click", (evt) => {
     socket.emit("navigation", {
-       action: "previous" 
+        action: "previous" 
     });
 });
 
 document.querySelector("#next").addEventListener("click", (evt) => {
     socket.emit("navigation", {
-       action: "next" 
+        action: "next" 
     });
 });
 
 document.querySelector("#reload").addEventListener("click", (evt) => {
     if(confirm("Reload?")) socket.emit("navigation", {
-       action: "reload"
+        action: "reload"
+    });
+});
+
+
+document.querySelector("#load").addEventListener("click", (evt) => {
+    socket.emit("navigation", {
+        action: "load",
+        payload: {
+            url: document.querySelector("#url").value
+        }
     });
 });
 

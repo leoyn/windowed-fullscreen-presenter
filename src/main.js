@@ -1,11 +1,11 @@
 const {app, BrowserWindow} = require('electron')
-const path = require('path')
 const server = require("./server.js");
-const colors = require('colors');
+require('colors');
 
 
 const port = process.env.PORT || 3000;
 
+let url = process.env.URL;
 let mainWindow;
 
 function createWindow () {
@@ -13,18 +13,14 @@ function createWindow () {
         frame: false,
         width: 1280,
         height: 720,
-        webPreferences: {
-        preload: path.join(__dirname, 'preload.js')
-        },
         fullscreenable: false,
         titleBarStyle: "customButtonsOnHover",
-    })
+    });
 
-    mainWindow.loadURL(process.env.URL)
-
+    if(url) mainWindow.loadURL(url);
 
     mainWindow.webContents.on('did-finish-load', function() {
-        mainWindow.webContents.insertCSS('html,iframe{ -webkit-app-region: drag; }');
+        mainWindow.webContents.insertCSS('html,*{ -webkit-app-region: drag; }');
     });
 }
 
@@ -41,20 +37,26 @@ app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') app.quit()
 })
 
-server.onKey = (action) => {
+server.onKey = (action, payload) => {
     let keyCode;
 
     switch(action) {
         case "next":
             keyCode = "Right"; 
             break;
-
         case "previous":
             keyCode = "Left"; 
             break;
-        
         case "reload":
             mainWindow.reload();
+            break;
+        case "load":
+            if(payload) try {
+                url = payload.url;
+                mainWindow.loadURL(url);
+            } catch(err) {
+                console.error(`Failed to load: '${url}'`.red);
+            }
             break;
     }
 

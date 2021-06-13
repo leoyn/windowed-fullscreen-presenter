@@ -4,7 +4,7 @@ const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 const utils = require("./utils");
 
-const token = utils.tokens.generate();
+const token = process.env.TOKEN || utils.tokens.generate();
 
 module.exports = {
     listen: (port) => {
@@ -38,7 +38,7 @@ io.on("connection", (socket) => {
         });
 
         socket.on("navigation", (data) => {
-            if(data.action) module.exports.onKey(data.action);
+            if(data.action) module.exports.onKey(data.action, data.payload);
         });
 
         socket.on("disconnect", () => {

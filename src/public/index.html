@@ -18,6 +18,12 @@
                 display: inline-block;
                 border-radius: 10px;
                 padding: 20px;
+                background-color: lightgrey;
+            }
+
+            input[type="url"] {
+                width: 300px;
+                font-size: 30px;
             }
 
             .button:active {
@@ -39,7 +45,9 @@
             <div class="button previous" id="previous">« previous</div>
             <div class="button next" id="next">next »</div>
             <div class="button reload" id="reload">🔄</div>
+            <div class="button reload" id="load">Load url</div>
         </div>
+        <input type="url" id="url" placeholder="https://example.com/my_presentation.pdf">
         <script src="/socket.io/socket.io.js"></script>
         <script src="/js/control.js"></script>
     </body>
