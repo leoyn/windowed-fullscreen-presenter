@@ -15,12 +15,35 @@ function createWindow () {
         height: 720,
         fullscreenable: false,
         titleBarStyle: "customButtonsOnHover",
+        webPreferences: {
+            nativeWindowOpen: true
+          }
     });
 
     if(url) mainWindow.loadURL(url);
 
     mainWindow.webContents.on('did-finish-load', function() {
         mainWindow.webContents.insertCSS('html,*{ -webkit-app-region: drag; }');
+    });
+
+    mainWindow.webContents.on('new-window', (event, newUrl, frameName, disposition, options) => {
+        event.preventDefault()
+
+        Object.assign(options, {
+            frame: true,
+            titleBarStyle: "default",
+            webContents: options.webContents, // use existing webContents if provided
+            show: false
+        })
+
+        const newWindow = new BrowserWindow(options);
+
+        newWindow.once('ready-to-show', () => newWindow.show())
+        
+        if (!options.webContents) {
+            newWindow.loadURL(newUrl) // existing webContents will be navigated automatically
+        }
+        event.newGuest = newWindow
     });
 }
 
